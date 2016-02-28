@@ -31,9 +31,9 @@ var rule = {
 };
 var interval = mindfulnessInterval(rule);
 
-// //A sample GET request    
-// dispatcher.onGet("/page1", function(req, res) {
-//     res.writeHead(200, {'Content-Type': 'text/plain'});
-//     res.end('Page One');
-// });    
+//A sample GET request    
+dispatcher.onGet("/", function(req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Page One');
+});    
 
