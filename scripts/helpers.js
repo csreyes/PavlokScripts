@@ -1,9 +1,11 @@
-function stimuli(stimulus, value) {
+var request = require('request');
+
+function stimulate(stimulus, value) {
   const stimuliTypes = ['shock', 'vibrate', 'beep'];
   const valueOptions = ['low', 'medium', 'high'];
   if (stimuliTypes.indexOf(stimulus) === -1) {return;}
 
-  if (valueOptions.indexOf(value) !== -1) {
+  if (valueOptions.indexOf(value) === -1) {
     value = valueTransform(stimulus, value);
   } 
   if (Number(value) == NaN) {return;}
@@ -12,24 +14,19 @@ function stimuli(stimulus, value) {
   var getUrl = 'https://pavlok.herokuapp.com/api/' + objectCode + '/' + stimulus + '/' + value;
   var options = '?alert=%20by%20Christian%20Reyes';
 
-  $.get(getUrl+options)
-    .done(function (data, result) {
-      console.log('stimulus=', stimulus);
-      console.log('value=', value);
-      console.log('get request to pavlok.herokuapp.com succeeded');
-    })
-    .fail( function() {
-      console.log('get request to pavlok.herokuapp.com failed');
-    }); 
+  request(getUrl+options, function(repsonse) {
+    console.log('getUrl=', getUrl+options);
+  })
+
 }
 
-function valueTransform = function(stimulus, value) {
+function valueTransform(stimulus, value) {
   // value for vibrate and shock is 0-255
   // value for beep and led is 1-4
   var valueMap = {
     vibrate: {
       low: 85,
-      med: 150,
+      med: 200,
       high: 240
     },
     shock: {
@@ -48,5 +45,5 @@ function valueTransform = function(stimulus, value) {
 };
 
 module.exports = {
-  stimuli: stimuli
+  stimulate: stimulate
 };
