@@ -10,7 +10,7 @@ const PORT=8080;
 var server = http.createServer(handleRequest);
 
 //Lets start our server
-server.listen(PORT, function(){
+server.listen(process.env.PORT || PORT, function(){
     console.log("Server listening on: http://localhost:%s", PORT);
 });
 
