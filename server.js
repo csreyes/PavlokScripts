@@ -2,7 +2,7 @@ var http = require('http');
 var dispatcher = require('httpdispatcher');
 var request = require('request');
 var schedule = require('node-schedule');
-var stimulate = require('./scripts/helpers').stimulate;
+var mindfulnessInterval = require('./scripts/mindfulnessInterval').mindfulnessInterval;
 
 const PORT=8080; 
 
@@ -18,31 +18,22 @@ server.listen(PORT, function(){
 function handleRequest(request, response){
     try {
         console.log(request.url);
-        //Disptach
         dispatcher.dispatch(request, response);
     } catch(err) {
         console.log(err);
     }
 }
 
-//mindfuless interval: vibrate Pavlok every 15
+//mindfulness interval: vibrate Pavlok every 15min between 6am-9pm
 var rule = {
   hour: [new schedule.Range(5, 20)],
   minute: [0, 15, 30, 45]
 };
-var every5Seconds = schedule.scheduleJob(rule, function() {
-  stimulate('vibrate', 'med');
-})
+var interval = mindfulnessInterval(rule);
 
 // //A sample GET request    
 // dispatcher.onGet("/page1", function(req, res) {
 //     res.writeHead(200, {'Content-Type': 'text/plain'});
 //     res.end('Page One');
 // });    
-
-// //A sample POST request
-// dispatcher.onPost("/post1", function(req, res) {
-//     res.writeHead(200, {'Content-Type': 'text/plain'});
-//     res.end('Got Post Data');
-// });
 
