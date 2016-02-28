@@ -16,12 +16,7 @@ server.listen(PORT, function(){
 
 //Lets use our dispatcher
 function handleRequest(request, response){
-    try {
-        console.log(request.url);
-        dispatcher.dispatch(request, response);
-    } catch(err) {
-        console.log(err);
-    }
+  response.end('It Works!! Path Hit: ' + request.url);
 }
 
 //mindfulness interval: vibrate Pavlok every 15min between 6am-9pm
@@ -32,8 +27,8 @@ var rule = {
 var interval = mindfulnessInterval(rule);
 
 //A sample GET request    
-dispatcher.onGet("/", function(req, res) {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('Page One');
-});    
+// dispatcher.onGet("/", function(req, res) {
+//     res.writeHead(200, {'Content-Type': 'text/plain'});
+//     res.end('Page One');
+// });    
 
