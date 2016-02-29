@@ -20,11 +20,31 @@ function handleRequest(request, response){
 }
 
 //mindfulness interval: vibrate Pavlok every 15min between 6am-9pm
-var rule = {
+var mindfulnessRule = {
   hour: [new schedule.Range(5, 20)],
   minute: [0, 15, 30, 45]
 };
-var interval = mindfulnessInterval(rule);
+var interval = mindfulnessInterval(mindfulnessRule);
+
+var caffeineRule = {
+  hour: [new schedule.Range(4, 20)],
+  minute: [new schedule.Range(0, 59)]
+};
+
+var wakeupInterval = schedule.scheduleJob(caffeineRule, function() {
+  request('https://vast-dawn-57259.herokuapp.com/', function(res) {
+    var date = new Date(Date.now());
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+
+    console.log('made request to wake up at ', strTime);
+  });
+});
 
 //A sample GET request    
 // dispatcher.onGet("/", function(req, res) {
